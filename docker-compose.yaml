@@ -1,10 +1,22 @@
-version: "3.7"
+version: "3.8"
+
 services:
+  client:
+    build:
+      context: ./client
+      target: development
+    ports:
+      - 3006:3006
+    volumes:
+      - ./client/src:/source/src
+      - /source/node_modules
+    depends_on:
+      - server
   server:
     build:
       args:
       - NODE_ENV=development
-      context: server
+      context: ./server
     command: npm run start-watch
     environment:
       - DATABASE_PORT=3306
@@ -14,7 +26,7 @@ services:
       - DATABASE_HOST=db
       - NODE_ENV=development
     ports:
-      - 80:80
+      - 5008:5008
       - 7800:7800
       - 7801:7801
     secrets:
@@ -24,9 +36,6 @@ services:
       - ./server/package.json:/source/package.json
       - ./server/package-lock.json:/source/package-lock.json
       - server:/opt/app/node_modules
-    networks:
-      - public
-      - private
     depends_on:
       - db
   db:
@@ -36,16 +45,24 @@ services:
       - db-password
     volumes:
       - db-data:/var/lib/mysql
-    networks:
-      - private
     environment:
       - MYSQL_DATABASE=tasks
       - MYSQL_HOST=db
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
       - MYSQL_TCP_PORT=3306
-networks:
-  public:
-  private:
+  nginx:
+    depends_on:
+      - server
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - 80:80
+    links:
+      - "server"
+      - "client"
 volumes:
   server:
   db-data:

@@ -10,4 +10,6 @@ app.all('/', function(req, res, next) {
   next();
  });
 
+app.get("/health-check", (_, res) => res.send("OK"));
+
 module.exports = app;

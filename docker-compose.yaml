@@ -6,7 +6,7 @@ services:
       context: ./client
       target: development
     ports:
-      - 3006:3006
+      - 3007:3007
     volumes:
       - ./client/src:/source/src
       - /source/node_modules
@@ -60,6 +60,7 @@ services:
       context: ./nginx
     ports:
       - 80:80
+      - 443:443
     links:
       - "server"
       - "client"

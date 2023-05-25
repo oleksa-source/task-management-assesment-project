@@ -14,7 +14,7 @@ export const TaskList = observer(() => {
 
     useEffect(() => {
         taskStore.retrieveTaskList();
-    }, []);
+    }, [taskStore]);
 
     const sortedTasks = useMemo(
         () => taskStore.tasks

@@ -1,7 +1,7 @@
 const expressApp = require("./server");
 const { Server } = require("socket.io");
 const createTodoHandlers = require("./data-access-layer/task-management/task.handlers");
-const { port} = require("./config");
+const { port } = require("./config");
 
 function createApplication(
     components,

@@ -10,7 +10,6 @@ class TaskRepository {
   async findAll() {
     const entities = await this.database(this.tableName)
         .select('*');
-
     return Promise.resolve(entities);
   }
 

@@ -4,13 +4,15 @@ const { createApplication } = require("./app");
 const database = require("./data-access-layer/database");
 const initializeDatabase = require("./data-access-layer/initialize-database");
 
-initializeDatabase().then(() => {
+
+const initializeApplication = () => {
   const [httpServer, ioHub] = createApplication(
       {
         taskRepository: new TaskRepository(database),
       },
       {
-        cors
+        cors,
+        path: "/socket.io"
       }
   );
 
@@ -34,4 +36,9 @@ initializeDatabase().then(() => {
     });
     ioHub.disconnect();
   }
-})
+}
+
+initializeDatabase().then(initializeApplication).catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

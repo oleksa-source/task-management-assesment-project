@@ -47,7 +47,6 @@ export const TaskViewingModal: React.FC<TaskViewingModalProps> = ({ task, toggle
 
     return (
         <div>
-            {/*<Button size="small" onClick={handleOpen}>Manage</Button>*/}
             <IconButton onClick={handleOpen} aria-label="settings">
                 <MoreVertIcon />
             </IconButton>

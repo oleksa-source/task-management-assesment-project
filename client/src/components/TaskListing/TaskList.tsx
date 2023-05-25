@@ -6,8 +6,10 @@ import { Task } from "../../stores/store-provider";
 import TaskItemModel from "../../stores/TaskItem";
 import {Container, Grid, Stack, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
+import {useNavigate} from "react-router-dom";
 
 export const TaskList = observer(() => {
+    const navigate = useNavigate();
     const taskStore = useStore();
 
     useEffect(() => {
@@ -43,7 +45,7 @@ export const TaskList = observer(() => {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <Button variant="contained">Let's create your first task!</Button>
+                            <Button variant="contained" onClick={() => navigate('/create-task')}>Let's create your first task!</Button>
                         </Stack>
                     </Container>
                 )

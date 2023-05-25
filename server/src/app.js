@@ -1,6 +1,6 @@
 const expressApp = require("./server");
 const { Server } = require("socket.io");
-const createTodoHandlers = require("./data-access-layer/task-management/task.handlers");
+const createTaskHandlers = require("./data-access-layer/task-management/task.handlers");
 const { port } = require("./config");
 
 function createApplication(
@@ -19,7 +19,8 @@ function createApplication(
         updateTask,
         deleteTask,
         listTask,
-    } = createTodoHandlers(components);
+        toggleCompleted
+    } = createTaskHandlers(components);
 
     ioHub.on("connection", (socket) => {
         socket.on("task:create", createTask);
@@ -27,6 +28,7 @@ function createApplication(
         socket.on("task:update", updateTask);
         socket.on("task:delete", deleteTask);
         socket.on("task:list", listTask);
+        socket.on("task:toggle:completed", toggleCompleted);
     });
 
     return [httpServer, ioHub];

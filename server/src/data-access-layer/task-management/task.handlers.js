@@ -66,9 +66,9 @@ module.exports = function (components) {
       }
 
       try {
-        const todo = await taskRepository.findById(id);
+        const task = await taskRepository.findById(id);
         callback({
-          data: todo,
+          data: task,
         });
       } catch (e) {
         callback({
@@ -93,8 +93,6 @@ module.exports = function (components) {
           errorDetails: mapErrorDetails(error.details),
         });
       }
-
-      value.updated_at = database.fn.now();
 
       try {
         await taskRepository.update(value);
@@ -129,6 +127,31 @@ module.exports = function (components) {
 
       callback();
       socket.broadcast.emit("task:deleted", id);
+    },
+
+    toggleCompleted: async function (id, callback) {
+      const socket = this;
+
+      const { error } = idSchema.validate(id);
+
+      if (error) {
+        return callback({
+          error: Errors.ENTITY_NOT_FOUND,
+        });
+      }
+
+      try {
+        const task = await taskRepository.findById(id);
+        task.completed = !task.completed;
+        await taskRepository.update(task);
+      } catch (e) {
+        return callback({
+          error: sanitizeErrorMessage(e),
+        });
+      }
+
+      callback();
+      socket.broadcast.emit("task:toggle:completed", id);
     },
 
     listTask: async function (callback) {

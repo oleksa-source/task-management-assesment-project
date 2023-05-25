@@ -1,25 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import TaskListing from "./components/TaskListing/TaskListing";
+import socket from "./socketClient";
+import {
+    Backdrop,
+    CircularProgress,
+    Container,
+    createTheme,
+    CssBaseline,
+    ThemeProvider,
+} from "@mui/material";
+import { PageLayout } from './layouts/PageLayout';
+import TaskCreation from "./components/TaskCreation/TaskCreation";
+
+const defaultTheme = createTheme({
+    palette: {
+        mode: 'light',
+    },
+});
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    const [isConnected, setIsConnected] = useState(socket.connected);
+
+    useEffect(() => {
+        socket.on('connect', () => {
+            setIsConnected(true);
+        });
+
+        socket.on('disconnect', () => {
+            setIsConnected(false);
+        });
+
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            socket.off('message');
+        };
+    }, []);
+
+    return (
+        <Container>
+            <ThemeProvider theme={defaultTheme}>
+                <CssBaseline />
+                <BrowserRouter>
+                    <Routes>
+                        <Route element={ <PageLayout /> }>
+                            <Route path='/' element={ <TaskListing socket={ socket } /> } />
+                            <Route path='/create-task' element={ <TaskCreation /> } />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={ !isConnected }
+                >
+                    <CircularProgress color="success" />
+                </Backdrop>
+            </ThemeProvider>
+        </Container>
   );
 }
 

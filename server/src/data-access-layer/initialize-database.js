@@ -17,7 +17,7 @@ const wait = ms => new Promise((resolve) => {
     setTimeout(() => resolve(), ms);
 });
 
-const untilConnected = (operation, retries = 10, delay = 50) => new Promise((resolve, reject) => {
+const untilConnected = (operation, retries = 10, delay = 100) => new Promise((resolve, reject) => {
     return operation()
         .then(resolve)
         .catch(() => {

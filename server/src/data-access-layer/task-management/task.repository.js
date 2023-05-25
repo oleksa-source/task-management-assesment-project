@@ -1,4 +1,5 @@
 const { Errors } = require('../util');
+const database = require("../database");
 
 class TaskRepository {
   tableName = 'tasks';
@@ -46,6 +47,8 @@ class TaskRepository {
   }
 
   async update(entity) {
+    entity.updated_at = database.fn.now();
+
     const updated = await this.database(this.tableName)
         .where({ id: entity.id })
         .update({

@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import {action, computed, makeObservable, observable, runInAction} from 'mobx';
 import TaskItem from './TaskItem';
 import {NewTask, Task} from "./store-provider";
 import socket from "../socketClient";
@@ -29,13 +29,39 @@ export class TaskList {
         // handle the error
         return;
       }
-      this.list.push(new TaskItem(task));
+      runInAction(() => {
+        this.list.push(new TaskItem(task));
+      });
+    });
+  };
+
+  addTaskAsync = (task: NewTask) => {
+    return new Promise((resolve, reject) => {
+      socket.emit("task:create", {
+        title: task.title,
+        description: task.description,
+        completed: false,
+        due_date: task.due_date,
+      }, (response: any) => {
+        if (response && "error" in response) {
+          // handle the error
+          return reject(response.error);
+        }
+        const newTask = new TaskItem(task);
+
+        runInAction(() => {
+          this.list.push(newTask);
+        });
+        resolve(newTask);
+      });
     });
   };
 
   retrieveTaskList = () => {
     socket.emit("task:list", ({ data }: { data: Task[] }) => {
-      this.list = data.map((task) => new TaskItem(task));
+      runInAction(() => {
+        this.list = data.map((task) => new TaskItem(task));
+      });
     });
   };
 
@@ -45,7 +71,9 @@ export class TaskList {
         // handle the error
         return;
       }
-      this.list.splice(this.list.indexOf(task), 1)
+      runInAction(() => {
+        this.list.splice(this.list.indexOf(task), 1);
+      });
     });
   };
 

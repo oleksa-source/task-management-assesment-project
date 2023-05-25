@@ -1,20 +1,17 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
 import {
     Card,
-    Chip,
     Divider,
     IconButton,
     Stack,
-    Switch,
     ToggleButton,
     ToggleButtonGroup,
     Typography
 } from "@mui/material";
-import { Close } from "@mui/icons-material";
 import TaskItemModel from "../../stores/TaskItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -50,7 +47,10 @@ export const TaskViewingModal: React.FC<TaskViewingModalProps> = ({ task, toggle
 
     return (
         <div>
-            <Button size="small" onClick={handleOpen}>Manage</Button>
+            {/*<Button size="small" onClick={handleOpen}>Manage</Button>*/}
+            <IconButton onClick={handleOpen} aria-label="settings">
+                <MoreVertIcon />
+            </IconButton>
             <Modal
                 open={open}
                 onClose={handleClose}

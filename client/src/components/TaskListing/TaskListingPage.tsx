@@ -7,7 +7,7 @@ type TaskListingProps = {
 	socket: Socket<any>
 }
 
-const TaskListing: React.FC<TaskListingProps> = () => {
+const TaskListingPage: React.FC<TaskListingProps> = () => {
 	return (
 			<Box
 				sx={{
@@ -36,4 +36,4 @@ const TaskListing: React.FC<TaskListingProps> = () => {
 	);
 }
 
-export default TaskListing;
+export default TaskListingPage;

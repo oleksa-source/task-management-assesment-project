@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
-import {Copyright} from "@mui/icons-material";
 
 export const PageLayout = () => {
     const navigate = useNavigate();

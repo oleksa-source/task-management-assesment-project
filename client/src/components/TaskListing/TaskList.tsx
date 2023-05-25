@@ -15,12 +15,14 @@ export const TaskList = observer(() => {
     }, []);
 
     const sortedTasks = useMemo(
-        () => taskStore.tasks.sort((a: Task, b: Task) => new Date(a.due_date).getDate() - new Date(b.due_date).getDate()),
+        () => taskStore.tasks
+            .sort((a: Task, b: Task) => (new Date(a.due_date) as unknown as number) - (new Date(b.due_date) as unknown as number)),
         [taskStore.tasks]
     );
 
     const sortedArchivedTasks = useMemo(
-        () => taskStore.archivedTasks.sort((a: Task, b: Task) => new Date(a.due_date).getDate() - new Date(b.due_date).getDate()),
+        () => taskStore.archivedTasks
+            .sort((a: Task, b: Task) => (new Date(a.due_date) as unknown as number) - (new Date(b.due_date) as unknown as number)),
         [taskStore.archivedTasks]
     );
 

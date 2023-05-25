@@ -2,7 +2,7 @@ import React from "react";
 import { TaskNew } from "./TaskNew";
 import Box from "@mui/material/Box";
 
-const TaskCreation = () => {
+const TaskCreationPage = () => {
 	return (
 		<Box
 			sx={{
@@ -16,4 +16,4 @@ const TaskCreation = () => {
 	);
 };
 
-export default TaskCreation;
+export default TaskCreationPage;

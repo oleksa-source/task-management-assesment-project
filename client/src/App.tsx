@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TaskListing from "./components/TaskListing/TaskListing";
+import TaskListingPage from "./components/TaskListing/TaskListingPage";
 import socket from "./socketClient";
 import {
     Backdrop,
@@ -11,7 +11,7 @@ import {
     ThemeProvider,
 } from "@mui/material";
 import { PageLayout } from './layouts/PageLayout';
-import TaskCreation from "./components/TaskCreation/TaskCreation";
+import TaskCreationPage from "./components/TaskCreation/TaskCreationPage";
 
 const defaultTheme = createTheme({
     palette: {
@@ -45,8 +45,8 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route element={ <PageLayout /> }>
-                            <Route path='/' element={ <TaskListing socket={ socket } /> } />
-                            <Route path='/create-task' element={ <TaskCreation /> } />
+                            <Route path='/' element={ <TaskListingPage socket={ socket } /> } />
+                            <Route path='/create-task' element={ <TaskCreationPage /> } />
                         </Route>
                     </Routes>
                 </BrowserRouter>

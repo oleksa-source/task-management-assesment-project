@@ -17,7 +17,8 @@ services:
       args:
       - NODE_ENV=development
       context: ./server
-    command: npm run start-watch
+    command: npm run start
+    restart: always
     environment:
       - DATABASE_PORT=3306
       - DATABASE_DB=tasks
